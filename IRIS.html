@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Iris</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@400&display=swap" rel="stylesheet">
 
@@ -12,33 +12,30 @@
   --accent2:#b06a2b;
 }
 
-body{
+html, body{
   margin:0;
-  min-height:100vh;
+  height:100%;
+  overflow:hidden; /* ✅ prevents screen dragging */
+  touch-action:none; /* ✅ stops touch scroll */
+}
+
+body{
   display:flex;
   justify-content:center;
   align-items:center;
   font-family:'Montserrat',sans-serif;
   color:#f5e6d3;
-  overflow:hidden;
 
   background:
     linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)),
     url("background.jpg") center/cover no-repeat;
 }
 
-/* Disable parallax movement on touch devices */
-@media (hover:hover){
-  body{
-    transition:background-position 0.1s ease-out;
-  }
-}
-
-/* ========= Floating ========= */
+/* Floating */
 
 .floating{
   position:absolute;
-  font-size:48px;
+  font-size:40px;
   opacity:0.35;
   pointer-events:none;
 }
@@ -62,26 +59,23 @@ body{
   100%{transform:translateX(110vw) rotate(360deg);}
 }
 
-/* ========= Stage ========= */
+/* Stage */
 
 .wrapper{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
   width:90%;
-  max-width:420px;
+  max-width:400px;
   text-align:center;
 }
 
 .stage{
   position:relative;
-  width:min(85vw,360px);
-  height:min(85vw,360px);
-  display:grid;
-  place-items:center;
+  width:min(80vw,320px);
+  height:min(80vw,320px);
+  margin:auto;
 }
 
 /* Shadow */
+
 .shadow{
   position:absolute;
   width:90%;
@@ -99,9 +93,8 @@ body{
 /* Vinyl */
 
 .vinyl{
-  position:relative;
-  width:100%;
-  height:100%;
+  position:absolute;
+  inset:0;
   border-radius:50%;
   display:flex;
   justify-content:center;
@@ -111,7 +104,6 @@ body{
   z-index:2;
 }
 
-/* Grooves */
 .vinyl::before{
   content:"";
   position:absolute;
@@ -128,10 +120,8 @@ body{
   box-shadow:
     0 0 40px rgba(0,0,0,0.85),
     0 0 60px rgba(255,180,100,0.25);
-  border-radius:50%;
 }
 
-/* ✅ Smooth subtle shine (no sweep) */
 .vinyl::after{
   content:"";
   position:absolute;
@@ -142,37 +132,23 @@ body{
       rgba(255,255,255,0.25),
       rgba(255,255,255,0.05) 35%,
       transparent 60%);
-  mix-blend-mode:screen;
-  pointer-events:none;
 }
 
-/* Center label */
-.label{
-  position:absolute;
-  width:28%;
-  height:28%;
-  border-radius:50%;
-  background:radial-gradient(circle,#b08968,#7f5539);
-  box-shadow:inset 0 0 16px rgba(0,0,0,0.4);
-  z-index:3;
+@keyframes spin{
+  from{transform:rotate(0);}
+  to{transform:rotate(360deg);}
 }
 
 .album{
-  position:absolute;
   width:35%;
   height:35%;
   border-radius:50%;
   object-fit:cover;
   border:4px solid #e6ccb2;
-  z-index:4;
+  z-index:3;
 }
 
-@keyframes spin{
-  from{transform:rotate(0deg);}
-  to{transform:rotate(360deg);}
-}
-
-/* ========= Tonearm ========= */
+/* Tonearm */
 
 .tonearm{
   position:absolute;
@@ -181,13 +157,13 @@ body{
   top:-5%;
   right:-10%;
   transform-origin:85% 18%;
-  transform:rotate(-32deg);
+  transform:rotate(-35deg);
   transition:transform 0.7s cubic-bezier(.2,.9,.2,1);
-  z-index:5;
+  z-index:4;
 }
 
 .playing .tonearm{
-  transform:rotate(8deg); /* ✅ Bigger movement */
+  transform:rotate(12deg);
 }
 
 .tonearm .arm{
@@ -208,31 +184,13 @@ body{
   border-radius:50%;
   background:radial-gradient(circle,#d8d8d8,#6f6f6f);
 }
-.tonearm .head{
-  position:absolute;
-  left:5%;
-  top:20%;
-  width:25%;
-  height:18%;
-  border-radius:6px;
-  background:#111;
-}
-.tonearm .needle{
-  position:absolute;
-  left:0;
-  top:38%;
-  width:12%;
-  height:3%;
-  border-radius:999px;
-  background:var(--accent);
-}
 
-/* ========= Controls ========= */
+/* Controls */
 
 h1{
   font-family:'Playfair Display',serif;
-  margin-top:20px;
-  font-size:26px;
+  margin-top:15px;
+  font-size:24px;
 }
 p{
   color:#e6ccb2;
@@ -241,13 +199,7 @@ p{
 
 .progress-container{
   width:100%;
-  margin-top:15px;
-}
-
-.time-row{
-  display:flex;
-  justify-content:space-between;
-  font-size:12px;
+  margin-top:10px;
 }
 
 .progress-bar{
@@ -256,8 +208,6 @@ p{
   background:rgba(255,255,255,0.3);
   border-radius:5px;
   position:relative;
-  margin-top:6px;
-  cursor:pointer;
 }
 
 .progress{
@@ -275,13 +225,12 @@ p{
   height:14px;
   background:var(--accent);
   border-radius:50%;
-  cursor:pointer;
 }
 
 .play-btn{
-  margin-top:20px;
-  width:65px;
-  height:65px;
+  margin-top:15px;
+  width:60px;
+  height:60px;
   border-radius:50%;
   background:radial-gradient(circle,var(--accent),var(--accent2));
   box-shadow:0 0 25px rgba(255,180,100,0.8);
@@ -291,7 +240,7 @@ p{
   cursor:pointer;
 }
 .play-btn span{
-  font-size:24px;
+  font-size:22px;
   color:#3b2f2f;
 }
 
@@ -311,15 +260,12 @@ p{
   <div class="shadow"></div>
 
   <div class="vinyl" id="vinyl">
-    <div class="label"></div>
     <img src="IRIS- goo goo dolls.jpg" class="album">
   </div>
 
   <div class="tonearm">
     <div class="pivot"></div>
     <div class="arm"></div>
-    <div class="head"></div>
-    <div class="needle"></div>
   </div>
 </div>
 
@@ -327,10 +273,6 @@ p{
 <p>Goo Goo Dolls</p>
 
 <div class="progress-container">
-  <div class="time-row">
-    <span id="current">0:00</span>
-    <span id="duration">0:00</span>
-  </div>
   <div class="progress-bar" id="progressBar">
     <div class="progress" id="progress"></div>
     <div class="thumb" id="thumb"></div>
@@ -355,48 +297,39 @@ const playBtn=document.getElementById("playBtn");
 const progress=document.getElementById("progress");
 const thumb=document.getElementById("thumb");
 const progressBar=document.getElementById("progressBar");
-const current=document.getElementById("current");
-const duration=document.getElementById("duration");
 
 let dragging=false;
 
-function formatTime(sec){
-  const m=Math.floor(sec/60);
-  const s=Math.floor(sec%60);
-  return m+":"+(s<10?"0"+s:s);
+function updateUI(percent){
+  progress.style.width=percent*100+"%";
+  thumb.style.left=percent*100+"%";
 }
 
-audio.addEventListener("loadedmetadata",()=>{
-  duration.textContent=formatTime(audio.duration);
+progressBar.addEventListener("pointerdown",e=>{
+  dragging=true;
+  progressBar.setPointerCapture(e.pointerId);
+  seek(e);
 });
+
+progressBar.addEventListener("pointermove",e=>{
+  if(dragging) seek(e);
+});
+
+progressBar.addEventListener("pointerup",()=>{
+  dragging=false;
+});
+
+function seek(e){
+  const rect=progressBar.getBoundingClientRect();
+  let percent=(e.clientX-rect.left)/rect.width;
+  percent=Math.max(0,Math.min(1,percent));
+  audio.currentTime=percent*audio.duration;
+  updateUI(percent);
+}
 
 audio.addEventListener("timeupdate",()=>{
   if(!dragging){
-    const percent=audio.currentTime/audio.duration;
-    progress.style.width=percent*100+"%";
-    thumb.style.left=percent*100+"%";
-    current.textContent=formatTime(audio.currentTime);
-  }
-});
-
-progressBar.addEventListener("click",(e)=>{
-  const rect=progressBar.getBoundingClientRect();
-  const percent=(e.clientX-rect.left)/rect.width;
-  audio.currentTime=percent*audio.duration;
-});
-
-thumb.addEventListener("mousedown",()=>dragging=true);
-document.addEventListener("mouseup",()=>dragging=false);
-
-document.addEventListener("mousemove",(e)=>{
-  if(dragging){
-    const rect=progressBar.getBoundingClientRect();
-    let offset=e.clientX-rect.left;
-    offset=Math.max(0,Math.min(offset,rect.width));
-    const percent=offset/rect.width;
-    progress.style.width=percent*100+"%";
-    thumb.style.left=percent*100+"%";
-    audio.currentTime=percent*audio.duration;
+    updateUI(audio.currentTime/audio.duration);
   }
 });
 
