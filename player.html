@@ -1,1 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vinyl Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@400&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --accent:#ffcf7d;
+  --accent2:#b06a2b;
+}
+
+html, body{
+  margin:0;
+  height:100%;
+  overflow:hidden;
+  touch-action:none;
+}
+
+body{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:'Montserrat',sans-serif;
+  color:#f5e6d3;
+  background:
+    linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)),
+    url("background.jpg") center/cover no-repeat;
+}
+
+.wrapper{
+  width:90%;
+  max-width:400px;
+  text-align:center;
+}
+
+.stage{
+  position:relative;
+  width:min(80vw,320px);
+  height:min(80vw,320px);
+  margin:auto;
+}
+
+.shadow{
+  position:absolute;
+  width:90%;
+  height:20%;
+  bottom:5%;
+  left:50%;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse at center,
+    rgba(0,0,0,0.6),
+    rgba(0,0,0,0) 70%);
+  filter:blur(10px);
+}
+
+.vinyl{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  animation:spin 6s linear infinite;
+  animation-play-state:paused;
+  overflow:hidden;
+}
+
+.vinyl::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at center,#222 0%,#111 8%,transparent 8%),
+    repeating-radial-gradient(circle at center,
+      #1a1a1a 0px,
+      #1a1a1a 2px,
+      #2a2a2a 3px,
+      #1a1a1a 4px
+    );
+  box-shadow:
+    0 0 40px rgba(0,0,0,0.85),
+    0 0 60px rgba(255,180,100,0.25);
+}
+
+.vinyl::after{
+  content:"";
+  position:absolute;
+  width:28%;
+  height:28%;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 40% 35%,
+      #d6a77a 0%,
+      #b08968 35%,
+      #7f5539 70%,
+      #5e3b2a 100%);
+}
+
+.album{
+  width:35%;
+  height:35%;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid #e6ccb2;
+  z-index:2;
+}
+
+@keyframes spin{
+  from{transform:rotate(0);}
+  to{transform:rotate(360deg);}
+}
+
+/* Tonearm */
+
+.tonearm{
+  position:absolute;
+  width:50%;
+  height:50%;
+  top:-2%;
+  right:-5%;
+  transform-origin:85% 18%;
+  transform:rotate(-28deg);
+  transition:transform 0.7s cubic-bezier(.2,.9,.2,1);
+}
+
+.playing .tonearm{
+  transform:rotate(-6deg);
+}
+
+.tonearm .arm{
+  position:absolute;
+  right:12%;
+  top:14%;
+  width:75%;
+  height:8%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#cfcfcf,#8f8f8f,#dedede);
+}
+
+.tonearm .pivot{
+  position:absolute;
+  right:0%;
+  top:5%;
+  width:22%;
+  height:22%;
+  border-radius:50%;
+  background:radial-gradient(circle,#d8d8d8,#6f6f6f);
+}
+
+h1{
+  font-family:'Playfair Display',serif;
+  margin-top:20px;
+  font-size:24px;
+}
+
+p{
+  color:#e6ccb2;
+  font-size:14px;
+}
+
+.time-row{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  margin-top:10px;
+  margin-bottom:5px;
+}
+
+.progress-bar{
+  width:100%;
+  height:6px;
+  background:rgba(255,255,255,0.3);
+  border-radius:5px;
+  position:relative;
+}
+
+.progress{
+  height:100%;
+  width:0%;
+  background:var(--accent);
+  border-radius:5px;
+}
+
+.thumb{
+  position:absolute;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:14px;
+  height:14px;
+  background:var(--accent);
+  border-radius:50%;
+}
+
+.play-btn{
+  margin:20px auto 0 auto;
+  width:65px;
+  height:65px;
+  border-radius:50%;
+  background:radial-gradient(circle,var(--accent),var(--accent2));
+  box-shadow:0 0 25px rgba(255,180,100,0.8);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper" id="wrapper">
+
+<div class="stage">
+  <div class="shadow"></div>
+
+  <div class="vinyl" id="vinyl">
+    <img id="coverImage" class="album">
+  </div>
+
+  <div class="tonearm">
+    <div class="pivot"></div>
+    <div class="arm"></div>
+  </div>
+</div>
+
+<h1 id="songTitle"></h1>
+<p id="artistName"></p>
+
+<div class="time-row">
+  <span id="current">0:00</span>
+  <span id="duration">0:00</span>
+</div>
+
+<div class="progress-bar" id="progressBar">
+  <div class="progress" id="progress"></div>
+  <div class="thumb" id="thumb"></div>
+</div>
+
+<div class="play-btn" id="playBtn">
+  ▶
+</div>
+
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+
+/* ✅ SONG DATABASE */
+
+const songs = {
+  iris: {
+    title: "Iris",
+    artist: "Goo Goo Dolls",
+    file: "iris.mp3",
+    cover: "iris.jpg"
+  },
+  floorplan: {
+    title: "Floorplan",
+    artist: "Your Artist Name",
+    file: "floorplan.mp3",
+    cover: "floorplan.jpg"
+  }
+};
+
+/* ✅ GET SONG FROM URL */
+
+const params = new URLSearchParams(window.location.search);
+const songKey = params.get("song");
+
+const song = songs[songKey];
+
+if(song){
+  document.getElementById("songTitle").textContent = song.title;
+  document.getElementById("artistName").textContent = song.artist;
+  document.getElementById("coverImage").src = song.cover;
+  document.getElementById("audio").src = song.file;
+}else{
+  document.getElementById("songTitle").textContent = "Song Not Found";
+}
+
+const wrapper=document.getElementById("wrapper");
+const audio=document.getElementById("audio");
+const vinyl=document.getElementById("vinyl");
+const playBtn=document.getElementById("playBtn");
+const progress=document.getElementById("progress");
+const thumb=document.getElementById("thumb");
+const progressBar=document.getElementById("progressBar");
+const current=document.getElementById("current");
+const duration=document.getElementById("duration");
+
+let dragging=false;
+
+function formatTime(sec){
+  const m=Math.floor(sec/60);
+  const s=Math.floor(sec%60);
+  return m+":"+(s<10?"0"+s:s);
+}
+
+audio.addEventListener("loadedmetadata",()=>{
+  duration.textContent=formatTime(audio.duration);
+});
+
+function updateUI(percent){
+  progress.style.width=percent*100+"%";
+  thumb.style.left=percent*100+"%";
+  current.textContent=formatTime(audio.currentTime);
+}
+
+progressBar.addEventListener("pointerdown",e=>{
+  dragging=true;
+  progressBar.setPointerCapture(e.pointerId);
+  seek(e);
+});
+
+progressBar.addEventListener("pointermove",e=>{
+  if(dragging) seek(e);
+});
+
+progressBar.addEventListener("pointerup",()=>{
+  dragging=false;
+});
+
+function seek(e){
+  const rect=progressBar.getBoundingClientRect();
+  let percent=(e.clientX-rect.left)/rect.width;
+  percent=Math.max(0,Math.min(1,percent));
+  audio.currentTime=percent*audio.duration;
+  updateUI(percent);
+}
+
+audio.addEventListener("timeupdate",()=>{
+  if(!dragging){
+    updateUI(audio.currentTime/audio.duration);
+  }
+});
+
+playBtn.addEventListener("click",()=>{
+  if(audio.paused){
+    audio.play();
+  }else{
+    audio.pause();
+  }
+});
+
+audio.addEventListener("play",()=>{
+  vinyl.style.animationPlayState="running";
+  wrapper.classList.add("playing");
+  playBtn.textContent="❚❚";
+});
+
+audio.addEventListener("pause",()=>{
+  vinyl.style.animationPlayState="paused";
+  wrapper.classList.remove("playing");
+  playBtn.textContent="▶";
+});
+
+</script>
+
+</body>
+</html>
