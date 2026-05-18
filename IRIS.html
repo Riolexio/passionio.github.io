@@ -1,86 +1,189 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Now Playing</title>
+  <title>Iris</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Vintage serif font -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@300&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #3b2f2f, #1c1a1a);
-      font-family: 'Montserrat', sans-serif;
-      color: #f5e6d3;
-    }
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #2c1f1a, #0e0c0c 70%);
+  font-family: 'Montserrat', sans-serif;
+  color: #f5e6d3;
+}
 
-    .card {
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(8px);
-      padding: 30px;
-      border-radius: 16px;
-      text-align: center;
-      width: 320px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-    }
+/* Floating icons */
+.floating-icon {
+  position: absolute;
+  font-size: 28px;
+  opacity: 0.05;
+  animation: float 20s linear infinite;
+}
 
-    .cover {
-      width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-      margin-bottom: 20px;
-    }
+@keyframes float {
+  from { transform: translateY(100vh) rotate(0deg); }
+  to { transform: translateY(-120vh) rotate(360deg); }
+}
 
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      margin: 10px 0 5px;
-      letter-spacing: 1px;
-    }
+/* Vinyl */
+.vinyl {
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #111 40%, #000 60%);
+  animation: spin 8s linear infinite;
+  z-index: 1;
+}
 
-    p {
-      font-size: 14px;
-      color: #d7c2ad;
-      margin-bottom: 20px;
-    }
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
-    audio {
-      width: 100%;
-      filter: sepia(1) contrast(0.8);
-    }
+.container {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
 
-    .vinyl {
-      position: absolute;
-      width: 400px;
-      height: 400px;
-      border-radius: 50%;
-      background: radial-gradient(circle at center, #111 40%, #000 60%);
-      opacity: 0.15;
-      z-index: -1;
-    }
+/* Album */
+.cover {
+  width: 250px;
+  border-radius: 8px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+}
 
-  </style>
+h1 {
+  font-family: 'Playfair Display', serif;
+  margin-top: 20px;
+  font-size: 26px;
+}
+
+p {
+  margin-bottom: 30px;
+  color: #c9b7a3;
+}
+
+/* Tube radio glow button */
+.play-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffcf7d, #b06a2b);
+  box-shadow: 0 0 25px rgba(255, 180, 100, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.play-btn:hover {
+  transform: scale(1.1);
+}
+
+.play-btn span {
+  font-size: 30px;
+  color: #3b2f2f;
+}
+
+/* Analog progress circle */
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring circle {
+  fill: transparent;
+  stroke: #ffcf7d;
+  stroke-width: 4;
+  stroke-dasharray: 440;
+  stroke-dashoffset: 440;
+  transition: stroke-dashoffset 0.1s linear;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="vinyl"></div>
+<!-- Floating icons -->
+<div class="floating-icon" style="left:10%; animation-delay:0s;">📼</div>
+<div class="floating-icon" style="left:30%; animation-delay:5s;">💿</div>
+<div class="floating-icon" style="left:60%; animation-delay:8s;">📻</div>
+<div class="floating-icon" style="left:80%; animation-delay:12s;">🎧</div>
 
-  <div class="card">
-    <img src="IRIS- goo goo dolls.jpg" class="cover">
+<div class="vinyl"></div>
 
-    <h1>Iris</h1>
-    <p>Goo Goo Dolls</p>
+<div class="container">
 
-    <audio autoplay controls>
-      <source src="iris.mp3" type="audio/mpeg">
-    </audio>
+  <img src="IRIS- goo goo dolls.jpg" class="cover">
+
+  <h1>Iris</h1>
+  <p>Goo Goo Dolls</p>
+
+  <!-- Analog progress -->
+  <svg class="progress-ring" width="150" height="150">
+    <circle r="70" cx="75" cy="75"/>
+  </svg>
+
+  <div class="play-btn" id="playBtn">
+    <span>▶</span>
   </div>
+
+  <audio id="player">
+    <source src="iris.mp3" type="audio/mpeg">
+  </audio>
+
+</div>
+
+<script>
+const player = document.getElementById("player");
+const playBtn = document.getElementById("playBtn");
+const circle = document.querySelector("circle");
+
+const radius = 70;
+const circumference = 2 * Math.PI * radius;
+
+circle.style.strokeDasharray = circumference;
+circle.style.strokeDashoffset = circumference;
+
+function setProgress(percent) {
+  const offset = circumference - percent * circumference;
+  circle.style.strokeDashoffset = offset;
+}
+
+player.addEventListener("timeupdate", () => {
+  const percent = player.currentTime / player.duration;
+  if (!isNaN(percent)) {
+    setProgress(percent);
+  }
+});
+
+playBtn.addEventListener("click", () => {
+  if (player.paused) {
+    player.play();
+    playBtn.innerHTML = "<span>❚❚</span>";
+  } else {
+    player.pause();
+    playBtn.innerHTML = "<span>▶</span>";
+  }
+});
+
+/* Autoplay attempt */
+window.addEventListener("load", () => {
+  player.play().then(() => {
+    playBtn.innerHTML = "<span>❚❚</span>";
+  }).catch(() => {});
+});
+</script>
 
 </body>
 </html>
