@@ -15,8 +15,8 @@
 html, body{
   margin:0;
   height:100%;
-  overflow:hidden; /* ✅ prevents screen dragging */
-  touch-action:none; /* ✅ stops touch scroll */
+  overflow:hidden;
+  touch-action:none;
 }
 
 body{
@@ -59,13 +59,15 @@ body{
   100%{transform:translateX(110vw) rotate(360deg);}
 }
 
-/* Stage */
+/* Wrapper */
 
 .wrapper{
   width:90%;
   max-width:400px;
   text-align:center;
 }
+
+/* Stage */
 
 .stage{
   position:relative;
@@ -134,9 +136,16 @@ body{
       transparent 60%);
 }
 
-@keyframes spin{
-  from{transform:rotate(0);}
-  to{transform:rotate(360deg);}
+/* ✅ Restored center label pin */
+
+.label{
+  position:absolute;
+  width:25%;
+  height:25%;
+  border-radius:50%;
+  background:radial-gradient(circle,#b08968,#7f5539);
+  box-shadow:inset 0 0 16px rgba(0,0,0,0.4);
+  z-index:3;
 }
 
 .album{
@@ -145,7 +154,12 @@ body{
   border-radius:50%;
   object-fit:cover;
   border:4px solid #e6ccb2;
-  z-index:3;
+  z-index:4;
+}
+
+@keyframes spin{
+  from{transform:rotate(0);}
+  to{transform:rotate(360deg);}
 }
 
 /* Tonearm */
@@ -159,7 +173,7 @@ body{
   transform-origin:85% 18%;
   transform:rotate(-35deg);
   transition:transform 0.7s cubic-bezier(.2,.9,.2,1);
-  z-index:4;
+  z-index:5;
 }
 
 .playing .tonearm{
@@ -189,7 +203,7 @@ body{
 
 h1{
   font-family:'Playfair Display',serif;
-  margin-top:15px;
+  margin-top:20px;
   font-size:24px;
 }
 p{
@@ -199,7 +213,7 @@ p{
 
 .progress-container{
   width:100%;
-  margin-top:10px;
+  margin-top:15px;
 }
 
 .progress-bar{
@@ -227,10 +241,12 @@ p{
   border-radius:50%;
 }
 
+/* ✅ Play button back under progress bar centered */
+
 .play-btn{
-  margin-top:15px;
-  width:60px;
-  height:60px;
+  margin:20px auto 0 auto;
+  width:65px;
+  height:65px;
   border-radius:50%;
   background:radial-gradient(circle,var(--accent),var(--accent2));
   box-shadow:0 0 25px rgba(255,180,100,0.8);
@@ -240,7 +256,7 @@ p{
   cursor:pointer;
 }
 .play-btn span{
-  font-size:22px;
+  font-size:24px;
   color:#3b2f2f;
 }
 
@@ -260,6 +276,7 @@ p{
   <div class="shadow"></div>
 
   <div class="vinyl" id="vinyl">
+    <div class="label"></div>
     <img src="IRIS- goo goo dolls.jpg" class="album">
   </div>
 
