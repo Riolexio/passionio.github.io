@@ -30,6 +30,34 @@ body{
     url("background.jpg") center/cover no-repeat;
 }
 
+/* FLOATING OBJECTS RESTORED */
+
+.floating{
+  position:absolute;
+  font-size:40px;
+  opacity:0.35;
+  pointer-events:none;
+}
+
+.obj1{left:8%;animation:floatUp 25s linear infinite;color:#ff8fab;}
+.obj2{right:10%;animation:floatDown 30s linear infinite;color:#90e0ef;}
+.obj3{top:15%;animation:floatSide 35s linear infinite;color:#ffd166;}
+.obj4{left:70%;animation:floatUp 28s linear infinite;color:#caffbf;}
+.obj5{right:35%;animation:floatDown 32s linear infinite;color:#bdb2ff;}
+
+@keyframes floatUp{
+  0%{transform:translateY(110vh) rotate(0);}
+  100%{transform:translateY(-110vh) rotate(360deg);}
+}
+@keyframes floatDown{
+  0%{transform:translateY(-110vh) rotate(0);}
+  100%{transform:translateY(110vh) rotate(-360deg);}
+}
+@keyframes floatSide{
+  0%{transform:translateX(-110vw) rotate(0);}
+  100%{transform:translateX(110vw) rotate(360deg);}
+}
+
 .wrapper{
   width:90%;
   max-width:400px;
@@ -42,6 +70,8 @@ body{
   height:min(80vw,320px);
   margin:auto;
 }
+
+/* SHADOW */
 
 .shadow{
   position:absolute;
@@ -56,6 +86,8 @@ body{
   filter:blur(10px);
 }
 
+/* VINYL */
+
 .vinyl{
   position:absolute;
   inset:0;
@@ -67,6 +99,8 @@ body{
   animation-play-state:paused;
   overflow:hidden;
 }
+
+/* GROOVES */
 
 .vinyl::before{
   content:"";
@@ -86,8 +120,23 @@ body{
     0 0 60px rgba(255,180,100,0.25);
 }
 
+/* ✅ SHINE RESTORED */
+
 .vinyl::after{
   content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 25%,
+      rgba(255,255,255,0.28),
+      rgba(255,255,255,0.08) 35%,
+      transparent 60%);
+}
+
+/* CENTER PIN */
+
+.label{
   position:absolute;
   width:28%;
   height:28%;
@@ -98,6 +147,10 @@ body{
       #b08968 35%,
       #7f5539 70%,
       #5e3b2a 100%);
+  box-shadow:
+    inset 0 0 15px rgba(0,0,0,0.5),
+    0 0 8px rgba(0,0,0,0.4);
+  z-index:3;
 }
 
 .album{
@@ -106,7 +159,7 @@ body{
   border-radius:50%;
   object-fit:cover;
   border:4px solid #e6ccb2;
-  z-index:2;
+  z-index:4;
 }
 
 @keyframes spin{
@@ -114,7 +167,7 @@ body{
   to{transform:rotate(360deg);}
 }
 
-/* Tonearm */
+/* ✅ GOOD TONEARM RESTORED */
 
 .tonearm{
   position:absolute;
@@ -125,6 +178,7 @@ body{
   transform-origin:85% 18%;
   transform:rotate(-28deg);
   transition:transform 0.7s cubic-bezier(.2,.9,.2,1);
+  pointer-events:none;
 }
 
 .playing .tonearm{
@@ -161,6 +215,8 @@ p{
   color:#e6ccb2;
   font-size:14px;
 }
+
+/* TIME ROW RESTORED */
 
 .time-row{
   display:flex;
@@ -211,12 +267,19 @@ p{
 </head>
 <body>
 
+<div class="floating obj1">📼</div>
+<div class="floating obj2">💿</div>
+<div class="floating obj3">📻</div>
+<div class="floating obj4">🎧</div>
+<div class="floating obj5">🎶</div>
+
 <div class="wrapper" id="wrapper">
 
 <div class="stage">
   <div class="shadow"></div>
 
   <div class="vinyl" id="vinyl">
+    <div class="label"></div>
     <img id="coverImage" class="album">
   </div>
 
@@ -239,58 +302,38 @@ p{
   <div class="thumb" id="thumb"></div>
 </div>
 
-<div class="play-btn" id="playBtn">
-  ▶
-</div>
+<div class="play-btn" id="playBtn">▶</div>
 
 </div>
 
 <audio id="audio"></audio>
 
 <script>
-
-/* ✅ SONG DATABASE */
-
 const songs = {
   iris: {
-    title: "Iris",
-    artist: "Goo Goo Dolls",
-    file: "iris.mp3",
-    cover: "iris.jpg"
+    title:"Iris",
+    artist:"Goo Goo Dolls",
+    file:"iris.mp3",
+    cover:"iris.jpg"
   },
   floorplan: {
-    title: "Floorplan",
-    artist: "Your Artist Name",
-    file: "floorplan.mp3",
-    cover: "floorplan.jpg"
+    title:"Floorplan",
+    artist:"Moon Tang",
+    file:"floorplan.mp3",
+    cover:"floorplan.jpg"
   }
 };
 
-/* ✅ GET SONG FROM URL */
-
-const params = new URLSearchParams(window.location.search);
-const songKey = params.get("song");
-
-const song = songs[songKey];
+const params=new URLSearchParams(window.location.search);
+const songKey=params.get("song");
+const song=songs[songKey];
 
 if(song){
-  document.getElementById("songTitle").textContent = song.title;
-  document.getElementById("artistName").textContent = song.artist;
-  document.getElementById("coverImage").src = song.cover;
-  document.getElementById("audio").src = song.file;
-}else{
-  document.getElementById("songTitle").textContent = "Song Not Found";
+  songTitle.textContent=song.title;
+  artistName.textContent=song.artist;
+  coverImage.src=song.cover;
+  audio.src=song.file;
 }
-
-const wrapper=document.getElementById("wrapper");
-const audio=document.getElementById("audio");
-const vinyl=document.getElementById("vinyl");
-const playBtn=document.getElementById("playBtn");
-const progress=document.getElementById("progress");
-const thumb=document.getElementById("thumb");
-const progressBar=document.getElementById("progressBar");
-const current=document.getElementById("current");
-const duration=document.getElementById("duration");
 
 let dragging=false;
 
@@ -339,11 +382,8 @@ audio.addEventListener("timeupdate",()=>{
 });
 
 playBtn.addEventListener("click",()=>{
-  if(audio.paused){
-    audio.play();
-  }else{
-    audio.pause();
-  }
+  if(audio.paused){audio.play();}
+  else{audio.pause();}
 });
 
 audio.addEventListener("play",()=>{
@@ -357,7 +397,6 @@ audio.addEventListener("pause",()=>{
   wrapper.classList.remove("playing");
   playBtn.textContent="▶";
 });
-
 </script>
 
 </body>
