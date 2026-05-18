@@ -30,7 +30,7 @@ body{
     url("background.jpg") center/cover no-repeat;
 }
 
-/* FLOATING OBJECTS RESTORED */
+/* FLOATING OBJECTS */
 
 .floating{
   position:absolute;
@@ -100,8 +100,6 @@ body{
   overflow:hidden;
 }
 
-/* GROOVES */
-
 .vinyl::before{
   content:"";
   position:absolute;
@@ -120,7 +118,7 @@ body{
     0 0 60px rgba(255,180,100,0.25);
 }
 
-/* ✅ SHINE RESTORED */
+/* SHINE */
 
 .vinyl::after{
   content:"";
@@ -134,7 +132,7 @@ body{
       transparent 60%);
 }
 
-/* CENTER PIN */
+/* CENTER LABEL */
 
 .label{
   position:absolute;
@@ -167,18 +165,19 @@ body{
   to{transform:rotate(360deg);}
 }
 
-/* ✅ GOOD TONEARM RESTORED */
+/* ✅ CLEAN MINIMAL TONEARM */
 
 .tonearm{
   position:absolute;
-  width:50%;
-  height:50%;
-  top:-2%;
-  right:-5%;
+  width:55%;
+  height:55%;
+  top:-5%;
+  right:-10%;
   transform-origin:85% 18%;
-  transform:rotate(-28deg);
+  transform:rotate(-26deg);
   transition:transform 0.7s cubic-bezier(.2,.9,.2,1);
   pointer-events:none;
+  z-index:5;
 }
 
 .playing .tonearm{
@@ -187,22 +186,42 @@ body{
 
 .tonearm .arm{
   position:absolute;
-  right:12%;
-  top:14%;
-  width:75%;
-  height:8%;
+  right:18%;
+  top:16%;
+  width:70%;
+  height:6%;
+  background:#e6e6e6;
   border-radius:999px;
-  background:linear-gradient(90deg,#cfcfcf,#8f8f8f,#dedede);
 }
 
 .tonearm .pivot{
   position:absolute;
-  right:0%;
-  top:5%;
+  right:0;
+  top:8%;
   width:22%;
   height:22%;
+  background:#f2f2f2;
   border-radius:50%;
-  background:radial-gradient(circle,#d8d8d8,#6f6f6f);
+}
+
+.tonearm .head{
+  position:absolute;
+  left:5%;
+  top:20%;
+  width:20%;
+  height:16%;
+  background:#111;
+  border-radius:4px;
+}
+
+.tonearm .needle{
+  position:absolute;
+  left:2%;
+  top:38%;
+  width:10%;
+  height:4%;
+  background:var(--accent);
+  border-radius:3px;
 }
 
 h1{
@@ -215,8 +234,6 @@ p{
   color:#e6ccb2;
   font-size:14px;
 }
-
-/* TIME ROW RESTORED */
 
 .time-row{
   display:flex;
@@ -286,6 +303,8 @@ p{
   <div class="tonearm">
     <div class="pivot"></div>
     <div class="arm"></div>
+    <div class="head"></div>
+    <div class="needle"></div>
   </div>
 </div>
 
@@ -309,19 +328,9 @@ p{
 <audio id="audio"></audio>
 
 <script>
-const songs = {
-  iris: {
-    title:"Iris",
-    artist:"Goo Goo Dolls",
-    file:"iris.mp3",
-    cover:"iris.jpg"
-  },
-  floorplan: {
-    title:"Floorplan",
-    artist:"Moon Tang",
-    file:"floorplan.mp3",
-    cover:"floorplan.jpg"
-  }
+const songs={
+  iris:{title:"Iris",artist:"Goo Goo Dolls",file:"iris.mp3",cover:"iris.jpg"},
+  floorplan:{title:"Floorplan",artist:"Moon Tang",file:"floorplan.mp3",cover:"floorplan.jpg"}
 };
 
 const params=new URLSearchParams(window.location.search);
@@ -363,9 +372,7 @@ progressBar.addEventListener("pointermove",e=>{
   if(dragging) seek(e);
 });
 
-progressBar.addEventListener("pointerup",()=>{
-  dragging=false;
-});
+progressBar.addEventListener("pointerup",()=>dragging=false);
 
 function seek(e){
   const rect=progressBar.getBoundingClientRect();
