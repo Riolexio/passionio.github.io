@@ -104,8 +104,10 @@ body{
   animation:spin 6s linear infinite;
   animation-play-state:paused;
   z-index:2;
+  overflow:hidden;
 }
 
+/* Grooves + glow */
 .vinyl::before{
   content:"";
   position:absolute;
@@ -124,27 +126,22 @@ body{
     0 0 60px rgba(255,180,100,0.25);
 }
 
+/* ✅ Premium realistic center pin */
 .vinyl::after{
   content:"";
   position:absolute;
-  inset:0;
+  width:28%;
+  height:28%;
   border-radius:50%;
   background:
-    radial-gradient(circle at 30% 25%,
-      rgba(255,255,255,0.25),
-      rgba(255,255,255,0.05) 35%,
-      transparent 60%);
-}
-
-/* ✅ Restored center label pin */
-
-.label{
-  position:absolute;
-  width:25%;
-  height:25%;
-  border-radius:50%;
-  background:radial-gradient(circle,#b08968,#7f5539);
-  box-shadow:inset 0 0 16px rgba(0,0,0,0.4);
+    radial-gradient(circle at 40% 35%,
+      #d6a77a 0%,
+      #b08968 35%,
+      #7f5539 70%,
+      #5e3b2a 100%);
+  box-shadow:
+    inset 0 0 15px rgba(0,0,0,0.5),
+    0 0 8px rgba(0,0,0,0.4);
   z-index:3;
 }
 
@@ -241,7 +238,7 @@ p{
   border-radius:50%;
 }
 
-/* ✅ Play button back under progress bar centered */
+/* Play button centered */
 
 .play-btn{
   margin:20px auto 0 auto;
@@ -276,7 +273,6 @@ p{
   <div class="shadow"></div>
 
   <div class="vinyl" id="vinyl">
-    <div class="label"></div>
     <img src="IRIS- goo goo dolls.jpg" class="album">
   </div>
 
