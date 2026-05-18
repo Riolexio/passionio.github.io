@@ -4,59 +4,81 @@
   <title>Now Playing</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Vintage serif font -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300&display=swap" rel="stylesheet">
 
   <style>
     body {
       margin: 0;
-      background: linear-gradient(to bottom, #1db954 0%, #121212 40%);
-      font-family: 'Montserrat', sans-serif;
-      color: white;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      background: linear-gradient(135deg, #3b2f2f, #1c1a1a);
+      font-family: 'Montserrat', sans-serif;
+      color: #f5e6d3;
     }
 
     .card {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      padding: 30px;
+      border-radius: 16px;
       text-align: center;
-      width: 300px;
+      width: 320px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
     }
 
     .cover {
       width: 100%;
       border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      margin-bottom: 20px;
     }
 
     h1 {
-      font-size: 20px;
-      margin: 15px 0 5px;
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      margin: 10px 0 5px;
+      letter-spacing: 1px;
     }
 
     p {
       font-size: 14px;
-      color: #b3b3b3;
+      color: #d7c2ad;
       margin-bottom: 20px;
     }
 
     audio {
       width: 100%;
-      filter: invert(1);
+      filter: sepia(1) contrast(0.8);
     }
+
+    .vinyl {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #111 40%, #000 60%);
+      opacity: 0.15;
+      z-index: -1;
+    }
+
   </style>
 </head>
 
 <body>
 
-  <div class="card">
-    <img src="cover1.jpg" class="cover">
+  <div class="vinyl"></div>
 
-    <h1>Your Song Title</h1>
-    <p>Your Artist Name</p>
+  <div class="card">
+    <img src="IRIS- goo goo dolls.jpg" class="cover">
+
+    <h1>Iris</h1>
+    <p>Goo Goo Dolls</p>
 
     <audio autoplay controls>
-      <source src="song1.mp3" type="audio/mpeg">
+      <source src="iris.mp3" type="audio/mpeg">
     </audio>
   </div>
 
