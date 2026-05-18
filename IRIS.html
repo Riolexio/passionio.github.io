@@ -4,232 +4,246 @@
   <title>Iris</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@400&display=swap" rel="stylesheet">
 
 <style>
 body {
   margin: 0;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: radial-gradient(circle at 50% 50%, #4a3a32, #1a1411 80%);
+  background: radial-gradient(circle at center, #5a443a, #1a1411 75%);
   font-family: 'Montserrat', sans-serif;
   color: #f5e6d3;
+  overflow: hidden;
 }
 
-/* Floating icons - bigger, more colourful, more visible */
-.floating-icon {
+/* ================= FLOATING OBJECTS ================= */
+
+.floating {
   position: absolute;
-  font-size: 48px; /* Bigger */
-  opacity: 0.12;    /* More visible */
-  animation: float 25s linear infinite;
-  text-shadow: 0 0 10px rgba(0,0,0,0.5);
+  font-size: 64px;
+  opacity: 0.25;
 }
 
-@keyframes float {
-  from { transform: translateY(110vh) rotate(0deg); }
-  to { transform: translateY(-110vh) rotate(360deg); }
+.obj1 { left: 10%; animation: floatUp 45s linear infinite; color:#ff8fab; }
+.obj2 { right: 15%; animation: floatDown 55s linear infinite; color:#90e0ef; }
+.obj3 { top: 20%; animation: floatSide 60s linear infinite; color:#ffd166; }
+.obj4 { left: 70%; animation: floatUp 50s linear infinite; color:#caffbf; }
+.obj5 { right: 40%; animation: floatDown 65s linear infinite; color:#bdb2ff; }
+
+@keyframes floatUp {
+  0% { transform: translateY(120vh) rotate(0deg); }
+  100% { transform: translateY(-120vh) rotate(360deg); }
+}
+@keyframes floatDown {
+  0% { transform: translateY(-120vh) rotate(0deg); }
+  100% { transform: translateY(120vh) rotate(-360deg); }
+}
+@keyframes floatSide {
+  0% { transform: translateX(-120vw) rotate(0deg); }
+  100% { transform: translateX(120vw) rotate(360deg); }
 }
 
-/* Main player unit */
-.player-container {
+/* ================= PLAYER ================= */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.vinyl {
   position: relative;
-  width: 400px;
-  height: 400px;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, #222 0%, #111 8%, transparent 8%),
+    repeating-radial-gradient(circle at center,
+      #1a1a1a 0px,
+      #1a1a1a 2px,
+      #2a2a2a 3px,
+      #1a1a1a 4px
+    );
+  box-shadow: 0 0 50px rgba(0,0,0,0.9);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
-}
-
-/* Hyper-detailed spinning vinyl */
-.vinyl-disc {
-  position: absolute;
-  width: 380px;
-  height: 380px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at center, #222 2%, #111 3%), /* Spindle hole */
-    radial-gradient(circle at center, #b59f84 15%, transparent 15.5%), /* Center label */
-    repeating-radial-gradient(circle at center, #2d2d2d, #2d2d2d 1px, #1a1a1a 1px, #1a1a1a 3px); /* Grooves */
-  box-shadow: 0 0 40px rgba(0,0,0,0.8);
-  animation: spin 8s linear infinite;
-  animation-play-state: paused; /* Starts paused */
+  animation: spin 6s linear infinite;
+  animation-play-state: paused;
 }
 
 @keyframes spin {
   from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  to   { transform: rotate(360deg); }
 }
 
-/* Album art centered on vinyl */
-.album-art {
-  width: 170px;
-  height: 170px;
+.vinyl::after {
+  content: "";
+  position: absolute;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
-  border: 4px solid #b59f84;
-  object-fit: cover;
-  box-shadow: 0 0 20px rgba(0,0,0,0.6);
-  z-index: 2;
+  background: radial-gradient(circle, #b08968, #7f5539);
 }
 
-/* Text and controls container */
-.controls-container {
-  width: 350px;
-  text-align: center;
+.album {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid #e6ccb2;
+  z-index: 3;
 }
 
 h1 {
   font-family: 'Playfair Display', serif;
-  font-size: 32px;
-  margin: 10px 0 5px;
+  margin-top: 35px;
+  font-size: 34px;
 }
 
 p {
-  font-size: 16px;
-  color: #c9b7a3;
-  margin-bottom: 25px;
+  margin-top: 5px;
+  color: #e6ccb2;
 }
 
-/* Interactive Spotify-style progress bar */
-.progress-bar-container {
+/* ✅ Spotify-style progress */
+
+.progress-container {
+  width: 380px;
+  margin-top: 25px;
+}
+
+.time-row {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 6px;
 }
 
-.time {
-  font-size: 12px;
-  min-width: 40px;
-}
-
-input[type="range"] {
-  -webkit-appearance: none;
+.progress-bar {
   width: 100%;
   height: 6px;
-  background: rgba(245, 230, 211, 0.2);
+  background: rgba(255,255,255,0.2);
   border-radius: 5px;
-  outline: none;
   cursor: pointer;
-}
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
-  background: #ffcf7d;
-  border-radius: 50%;
-  box-shadow: 0 0 5px rgba(255, 207, 125, 0.5);
-  margin-top: -5px; /* Center thumb on track */
+  position: relative;
 }
 
-/* Glow button */
+.progress {
+  height: 100%;
+  width: 0%;
+  background: #ffcf7d;
+  border-radius: 5px;
+}
+
+/* Play button */
+
 .play-btn {
-  width: 70px;
-  height: 70px;
+  margin-top: 30px;
+  width: 75px;
+  height: 75px;
   border-radius: 50%;
   background: radial-gradient(circle, #ffcf7d, #b06a2b);
-  box-shadow: 0 0 25px rgba(255, 180, 100, 0.7);
+  box-shadow: 0 0 30px rgba(255,180,100,0.8);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px auto 0;
   cursor: pointer;
-  transition: 0.3s;
 }
-.play-btn:hover { transform: scale(1.1); }
-.play-btn span { font-size: 28px; color: #3b2f2f; }
+
+.play-btn span {
+  font-size: 28px;
+  color: #3b2f2f;
+}
+
 </style>
 </head>
-
 <body>
 
-<!-- Colourful floating icons -->
-<div class="floating-icon" style="left:10%; animation-delay:-2s; color:#87CEEB;">📼</div>
-<div class="floating-icon" style="left:30%; animation-delay:-8s; color:#98FB98;">💿</div>
-<div class="floating-icon" style="left:50%; animation-delay:-15s; color:#FFB6C1;">📻</div>
-<div class="floating-icon" style="left:70%; animation-delay:-20s; color:#FFD700;">🎧</div>
-<div class="floating-icon" style="left:90%; animation-delay:-5s; color:#DDA0DD;">🎸</div>
+<div class="floating obj1">📼</div>
+<div class="floating obj2">💿</div>
+<div class="floating obj3">📻</div>
+<div class="floating obj4">🎧</div>
+<div class="floating obj5">🎶</div>
 
-<div class="main-wrapper">
-  <div class="player-container">
-    <div class="vinyl-disc" id="vinyl"></div>
-    <img src="IRIS- goo goo dolls.jpg" class="album-art">
+<div class="wrapper">
+
+  <div class="vinyl" id="vinyl">
+    <img src="IRIS- goo goo dolls.jpg" class="album">
   </div>
 
-  <div class="controls-container">
-    <h1>Iris</h1>
-    <p>Goo Goo Dolls</p>
+  <h1>Iris</h1>
+  <p>Goo Goo Dolls</p>
 
-    <div class="progress-bar-container">
-      <span class="time" id="currentTime">0:00</span>
-      <input type="range" id="progressBar" value="0" step="1" max="100">
-      <span class="time" id="duration">0:00</span>
+  <div class="progress-container">
+    <div class="time-row">
+      <span id="current">0:00</span>
+      <span id="duration">0:00</span>
     </div>
-
-    <div class="play-btn" id="playBtn">
-      <span>▶</span>
+    <div class="progress-bar" id="progressBar">
+      <div class="progress" id="progress"></div>
     </div>
   </div>
+
+  <div class="play-btn" id="playBtn">
+    <span>▶</span>
+  </div>
+
 </div>
 
-<audio id="player">
+<audio id="audio">
   <source src="iris.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-const player = document.getElementById("player");
+const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
 const vinyl = document.getElementById("vinyl");
 const progressBar = document.getElementById("progressBar");
-const currentTimeEl = document.getElementById("currentTime");
-const durationEl = document.getElementById("duration");
+const progress = document.getElementById("progress");
+const current = document.getElementById("current");
+const duration = document.getElementById("duration");
 
-function formatTime(seconds) {
-  const min = Math.floor(seconds / 60);
-  const sec = Math.floor(seconds % 60);
-  return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+function formatTime(sec){
+  const m = Math.floor(sec/60);
+  const s = Math.floor(sec%60);
+  return m + ":" + (s<10?"0"+s:s);
 }
 
-// Play/Pause logic
-playBtn.addEventListener("click", () => {
-  const isPlaying = player.paused;
-  if (isPlaying) {
-    player.play();
+audio.addEventListener("loadedmetadata", ()=>{
+  duration.textContent = formatTime(audio.duration);
+});
+
+audio.addEventListener("timeupdate", ()=>{
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progress.style.width = percent + "%";
+  current.textContent = formatTime(audio.currentTime);
+});
+
+/* ✅ Click to seek like Spotify */
+progressBar.addEventListener("click", (e)=>{
+  const width = progressBar.clientWidth;
+  const clickX = e.offsetX;
+  const durationTime = audio.duration;
+
+  audio.currentTime = (clickX / width) * durationTime;
+});
+
+playBtn.addEventListener("click", ()=>{
+  if(audio.paused){
+    audio.play();
+    vinyl.style.animationPlayState="running";
+    playBtn.innerHTML="<span>❚❚</span>";
   } else {
-    player.pause();
+    audio.pause();
+    vinyl.style.animationPlayState="paused";
+    playBtn.innerHTML="<span>▶</span>";
   }
-});
-
-player.onplay = () => {
-  playBtn.innerHTML = "<span>❚❚</span>";
-  vinyl.style.animationPlayState = "running";
-};
-
-player.onpause = () => {
-  playBtn.innerHTML = "<span>▶</span>";
-  vinyl.style.animationPlayState = "paused";
-};
-
-// Progress bar logic
-player.addEventListener("timeupdate", () => {
-  const progress = (player.currentTime / player.duration) * 100;
-  progressBar.value = progress;
-  currentTimeEl.textContent = formatTime(player.currentTime);
-});
-
-progressBar.addEventListener("input", () => {
-  const seekTime = (progressBar.value / 100) * player.duration;
-  player.currentTime = seekTime;
-});
-
-// Load song duration
-player.addEventListener("loadedmetadata", () => {
-  durationEl.textContent = formatTime(player.duration);
-  progressBar.max = player.duration;
-  progressBar.value = 0;
 });
 </script>
 
