@@ -1,1 +1,163 @@
-hello
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Riolexio Archive</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@400&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background:
+    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url("background.jpg") center/cover no-repeat;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 40px;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  opacity: 0.8;
+  margin-bottom: 40px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.album {
+  position: relative;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.album img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.album:hover {
+  transform: scale(1.08);
+}
+
+.album span {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+</style>
+</head>
+
+<body>
+
+<h1>RIOLEXIO ARCHIVE</h1>
+<div class="subtitle">A Personal Digital Jukebox</div>
+
+<div class="grid">
+
+  <div class="album" onclick="openSong('iris')">
+    <img src="iris.jpg">
+    <span>Iris</span>
+  </div>
+
+  <div class="album" onclick="openSong('floorplan')">
+    <img src="floorplan.jpg">
+    <span>Floorplan</span>
+  </div>
+
+  <div class="album" onclick="openSong('Beautiful Girls')">
+    <img src="Beautiful Girls.jpg">
+    <span>Beautiful Girls</span>
+  </div>
+
+  <div class="album" onclick="openSong('Can\'t Leave You Alone')">
+    <img src="Can't Leave You Alone.jpg">
+    <span>Can't Leave You Alone</span>
+  </div>
+
+  <div class="album" onclick="openSong('Circles')">
+    <img src="Circles.jpg">
+    <span>Circles</span>
+  </div>
+
+  <div class="album" onclick="openSong('Closer')">
+    <img src="Closer.jpg">
+    <span>Closer</span>
+  </div>
+
+  <div class="album" onclick="openSong('death bed')">
+    <img src="death bed.jpg">
+    <span>death bed</span>
+  </div>
+
+  <div class="album" onclick="openSong('Every Breath You Take')">
+    <img src="Every Breath You Take.jpg">
+    <span>Every Breath You Take</span>
+  </div>
+
+  <div class="album" onclick="openSong('If the World Was Ending')">
+    <img src="If the World Was Ending.jpg">
+    <span>If the World Was Ending</span>
+  </div>
+
+  <div class="album" onclick="openSong('Lucid Dreams')">
+    <img src="Lucid Dreams.jpg">
+    <span>Lucid Dreams</span>
+  </div>
+
+  <div class="album" onclick="openSong('Sparks')">
+    <img src="Sparks.jpg">
+    <span>Sparks</span>
+  </div>
+
+  <div class="album" onclick="openSong('Sports')">
+    <img src="Sports.jpg">
+    <span>Sports</span>
+  </div>
+
+  <div class="album" onclick="openSong('STAY')">
+    <img src="STAY.jpg">
+    <span>STAY</span>
+  </div>
+
+  <div class="album" onclick="openSong('Strangers')">
+    <img src="Strangers.jpg">
+    <span>Strangers</span>
+  </div>
+
+  <div class="album" onclick="openSong('Sunflower')">
+    <img src="Sunflower.jpg">
+    <span>Sunflower</span>
+  </div>
+
+  <div class="album" onclick="openSong('Without Me')">
+    <img src="Without Me.jpg">
+    <span>Without Me</span>
+  </div>
+
+</div>
+
+<script>
+function openSong(songName) {
+  const encoded = encodeURIComponent(songName);
+  window.location.href = `player.html?song=${encoded}`;
+}
+</script>
+
+</body>
+</html>
