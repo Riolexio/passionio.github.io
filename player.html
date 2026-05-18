@@ -84,8 +84,6 @@ body{
   filter:blur(10px);
 }
 
-/* Vinyl */
-
 .vinyl{
   position:absolute;
   inset:0;
@@ -159,7 +157,7 @@ body{
   to{transform:rotate(360deg);}
 }
 
-/* ✅ UNIVERSAL TONEARM (works for all songs) */
+/* CLEAN TONEARM */
 
 .tonearm{
   position:absolute;
@@ -324,7 +322,21 @@ p{
 <script>
 const songs={
   iris:{title:"Iris",artist:"Goo Goo Dolls",file:"iris.mp3",cover:"iris.jpg"},
-  floorplan:{title:"Floorplan",artist:"Moon Tang",file:"floorplan.mp3",cover:"floorplan.jpg"}
+  floorplan:{title:"Floorplan",artist:"Moon Tang",file:"floorplan.mp3",cover:"floorplan.jpg"},
+  "Beautiful Girls":{title:"Beautiful Girls",artist:"Sean Kingston",file:"Beautiful Girls.mp3",cover:"Beautiful Girls.jpg"},
+  "Can't Leave You Alone":{title:"Can't Leave You Alone",artist:"Maroon 5",file:"Can't Leave You Alone.mp3",cover:"Can't Leave You Alone.jpg"},
+  "Circles":{title:"Circles",artist:"Post Malone",file:"Circles.mp3",cover:"Circles.jpg"},
+  "Closer":{title:"Closer",artist:"The Chainsmokers",file:"Closer.mp3",cover:"Closer.jpg"},
+  "death bed":{title:"death bed",artist:"Powfu",file:"death bed.mp3",cover:"death bed.jpg"},
+  "Every Breath You Take":{title:"Every Breath You Take",artist:"The Police",file:"Every Breath You Take.mp3",cover:"Every Breath You Take.jpg"},
+  "If the World Was Ending":{title:"If the World Was Ending",artist:"JP Saxe & Julia Michaels",file:"If the World Was Ending.mp3",cover:"If the World Was Ending.jpg"},
+  "Lucid Dreams":{title:"Lucid Dreams",artist:"Juice WRLD",file:"Lucid Dreams.mp3",cover:"Lucid Dreams.jpg"},
+  "Sparks":{title:"Sparks",artist:"Coldplay",file:"Sparks.mp3",cover:"Sparks.jpg"},
+  "Sports":{title:"Sports",artist:"Beach Bunny",file:"Sports.mp3",cover:"Sports.jpg"},
+  "STAY":{title:"STAY",artist:"The Kid LAROI & Justin Bieber",file:"STAY.mp3",cover:"STAY.jpg"},
+  "Strangers":{title:"Strangers",artist:"Kenya Grace",file:"Strangers.mp3",cover:"Strangers.jpg"},
+  "Sunflower":{title:"Sunflower",artist:"Post Malone & Swae Lee",file:"Sunflower.mp3",cover:"Sunflower.jpg"},
+  "Without Me":{title:"Without Me",artist:"Halsey",file:"Without Me.mp3",cover:"Without Me.jpg"}
 };
 
 const params=new URLSearchParams(window.location.search);
@@ -338,16 +350,6 @@ if(song){
   audio.src=song.file;
 }
 
-const vinyl=document.getElementById("vinyl");
-const tonearm=document.getElementById("tonearm");
-const audioEl=document.getElementById("audio");
-const playBtn=document.getElementById("playBtn");
-const progress=document.getElementById("progress");
-const thumb=document.getElementById("thumb");
-const progressBar=document.getElementById("progressBar");
-const current=document.getElementById("current");
-const duration=document.getElementById("duration");
-
 let dragging=false;
 
 function formatTime(sec){
@@ -356,14 +358,14 @@ function formatTime(sec){
   return m+":"+(s<10?"0"+s:s);
 }
 
-audioEl.addEventListener("loadedmetadata",()=>{
-  duration.textContent=formatTime(audioEl.duration);
+audio.addEventListener("loadedmetadata",()=>{
+  duration.textContent=formatTime(audio.duration);
 });
 
 function updateUI(percent){
   progress.style.width=percent*100+"%";
   thumb.style.left=percent*100+"%";
-  current.textContent=formatTime(audioEl.currentTime);
+  current.textContent=formatTime(audio.currentTime);
 }
 
 progressBar.addEventListener("pointerdown",e=>{
@@ -382,30 +384,30 @@ function seek(e){
   const rect=progressBar.getBoundingClientRect();
   let percent=(e.clientX-rect.left)/rect.width;
   percent=Math.max(0,Math.min(1,percent));
-  audioEl.currentTime=percent*audioEl.duration;
+  audio.currentTime=percent*audio.duration;
   updateUI(percent);
 }
 
-audioEl.addEventListener("timeupdate",()=>{
+audio.addEventListener("timeupdate",()=>{
   if(!dragging){
-    updateUI(audioEl.currentTime/audioEl.duration);
+    updateUI(audio.currentTime/audio.duration);
   }
 });
 
 playBtn.addEventListener("click",()=>{
-  if(audioEl.paused){audioEl.play();}
-  else{audioEl.pause();}
+  if(audio.paused){audio.play();}
+  else{audio.pause();}
 });
 
-audioEl.addEventListener("play",()=>{
+audio.addEventListener("play",()=>{
   vinyl.style.animationPlayState="running";
-  tonearm.classList.add("playing");
+  document.getElementById("tonearm").classList.add("playing");
   playBtn.textContent="❚❚";
 });
 
-audioEl.addEventListener("pause",()=>{
+audio.addEventListener("pause",()=>{
   vinyl.style.animationPlayState="paused";
-  tonearm.classList.remove("playing");
+  document.getElementById("tonearm").classList.remove("playing");
   playBtn.textContent="▶";
 });
 </script>
