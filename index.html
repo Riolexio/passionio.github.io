@@ -10,153 +10,248 @@
 body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
-  background:
-    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-    url("background.jpg") center/cover no-repeat;
+  background: black;
   color: white;
-  text-align: center;
-  padding: 40px 20px;
+  overflow-x: hidden;
+}
+
+/* ✅ CRT BOOT ANIMATION */
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: monospace;
+  font-size: 18px;
+  color: #33ff33;
+  animation: bootFade 2.5s forwards;
+  z-index: 1000;
+}
+
+@keyframes bootFade {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+/* ✅ Fade-in main page */
+.main-content {
+  opacity: 0;
+  animation: fadeIn 1.5s ease forwards;
+  animation-delay: 2.5s;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
 }
 
 h1 {
   font-family: 'Playfair Display', serif;
-  font-size: 40px;
-  margin-bottom: 10px;
-  letter-spacing: 2px;
+  text-align: center;
+  font-size: 42px;
+  margin-top: 40px;
+  letter-spacing: 3px;
 }
 
 .subtitle {
-  opacity: 0.8;
+  text-align: center;
+  opacity: 0.7;
   margin-bottom: 40px;
 }
 
+/* ✅ Perfect Symmetrical Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 20px;
-  max-width: 900px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 30px;
+  max-width: 1000px;
   margin: auto;
+  padding: 20px;
 }
 
+/* ✅ Album Card */
 .album {
-  position: relative;
+  text-align: center;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.3s ease;
+  position: relative;
 }
 
 .album img {
   width: 100%;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+  transition: 0.3s ease;
 }
 
-.album:hover {
-  transform: scale(1.08);
+/* ✅ Animated Glow Hover */
+.album:hover img {
+  transform: scale(1.07);
+  box-shadow:
+    0 0 15px rgba(255, 207, 125, 0.6),
+    0 15px 35px rgba(0,0,0,0.8);
 }
 
 .album span {
   display: block;
-  margin-top: 8px;
+  margin-top: 10px;
   font-size: 14px;
-  opacity: 0.9;
+}
+
+/* ✅ Now Playing Highlight */
+.album.now-playing img {
+  box-shadow:
+    0 0 25px rgba(255, 207, 125, 0.9),
+    0 0 60px rgba(255, 207, 125, 0.5);
+}
+
+.album.now-playing::after {
+  content: "Now Playing";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #ffcf7d;
+  color: black;
+  padding: 4px 8px;
+  font-size: 10px;
+  border-radius: 6px;
+}
+
+/* ✅ Smooth Fade Transition */
+.fade-out {
+  animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; }
 }
 </style>
 </head>
-
 <body>
 
+<div class="boot-screen">
+  Booting Riolexio Archive...
+</div>
+
+<div class="main-content" id="main">
+
 <h1>RIOLEXIO ARCHIVE</h1>
-<div class="subtitle">A Personal Digital Jukebox</div>
+<div class="subtitle">A Personal Digital Vinyl Collection</div>
 
 <div class="grid">
 
-  <div class="album" onclick="openSong('iris')">
-    <img src="iris.jpg">
-    <span>Iris</span>
-  </div>
+<!-- ✅ Repeatable Album Block -->
 
-  <div class="album" onclick="openSong('floorplan')">
-    <img src="floorplan.jpg">
-    <span>Floorplan</span>
-  </div>
+<div class="album" data-song="iris">
+  <img src="iris.jpg">
+  <span>Iris</span>
+</div>
 
-  <div class="album" onclick="openSong('Beautiful Girls')">
-    <img src="Beautiful Girls.jpg">
-    <span>beautifulgirls</span>
-  </div>
+<div class="album" data-song="floorplan">
+  <img src="floorplan.jpg">
+  <span>Floorplan</span>
+</div>
 
-  <div class="album" onclick="openSong('Can\'t Leave You Alone')">
-    <img src="Can't Leave You Alone.jpg">
-    <span>cantleaveyoualone</span>
-  </div>
+<div class="album" data-song="beautifulgirls">
+  <img src="Beautiful Girls.jpg">
+  <span>Beautiful Girls</span>
+</div>
 
-  <div class="album" onclick="openSong('Circles')">
-    <img src="Circles.jpg">
-    <span>Circles</span>
-  </div>
+<div class="album" data-song="cantleaveyoualone">
+  <img src="Can't Leave You Alone.jpg">
+  <span>Can't Leave You Alone</span>
+</div>
 
-  <div class="album" onclick="openSong('Closer')">
-    <img src="Closer.jpg">
-    <span>Closer</span>
-  </div>
+<div class="album" data-song="Circles">
+  <img src="Circles.jpg">
+  <span>Circles</span>
+</div>
 
-  <div class="album" onclick="openSong('death bed')">
-    <img src="death bed.jpg">
-    <span>death bed</span>
-  </div>
+<div class="album" data-song="Closer">
+  <img src="Closer.jpg">
+  <span>Closer</span>
+</div>
 
-  <div class="album" onclick="openSong('Every Breath You Take')">
-    <img src="Every Breath You Take.jpg">
-    <span>Every Breath You Take</span>
-  </div>
+<div class="album" data-song="death bed">
+  <img src="death bed.jpg">
+  <span>death bed</span>
+</div>
 
-  <div class="album" onclick="openSong('If the World Was Ending')">
-    <img src="If the World Was Ending.jpg">
-    <span>If the World Was Ending</span>
-  </div>
+<div class="album" data-song="Every Breath You Take">
+  <img src="Every Breath You Take.jpg">
+  <span>Every Breath You Take</span>
+</div>
 
-  <div class="album" onclick="openSong('Lucid Dreams')">
-    <img src="Lucid Dreams.jpg">
-    <span>Lucid Dreams</span>
-  </div>
+<div class="album" data-song="If the World Was Ending">
+  <img src="If the World Was Ending.jpg">
+  <span>If the World Was Ending</span>
+</div>
 
-  <div class="album" onclick="openSong('Sparks')">
-    <img src="Sparks.jpg">
-    <span>Sparks</span>
-  </div>
+<div class="album" data-song="Lucid Dreams">
+  <img src="Lucid Dreams.jpg">
+  <span>Lucid Dreams</span>
+</div>
 
-  <div class="album" onclick="openSong('Sports')">
-    <img src="Sports.jpg">
-    <span>Sports</span>
-  </div>
+<div class="album" data-song="Sparks">
+  <img src="Sparks.jpg">
+  <span>Sparks</span>
+</div>
 
-  <div class="album" onclick="openSong('STAY')">
-    <img src="STAY.jpg">
-    <span>STAY</span>
-  </div>
+<div class="album" data-song="Sports">
+  <img src="Sports.jpg">
+  <span>Sports</span>
+</div>
 
-  <div class="album" onclick="openSong('Strangers')">
-    <img src="Strangers.jpg">
-    <span>Strangers</span>
-  </div>
+<div class="album" data-song="STAY">
+  <img src="STAY.jpg">
+  <span>STAY</span>
+</div>
 
-  <div class="album" onclick="openSong('Sunflower')">
-    <img src="Sunflower.jpg">
-    <span>Sunflower</span>
-  </div>
+<div class="album" data-song="Strangers">
+  <img src="Strangers.jpg">
+  <span>Strangers</span>
+</div>
 
-  <div class="album" onclick="openSong('Without Me')">
-    <img src="Without Me.jpg">
-    <span>Without Me</span>
-  </div>
+<div class="album" data-song="Sunflower">
+  <img src="Sunflower.jpg">
+  <span>Sunflower</span>
+</div>
 
+<div class="album" data-song="Without Me">
+  <img src="Without Me.jpg">
+  <span>Without Me</span>
+</div>
+
+</div>
 </div>
 
 <script>
-function openSong(songName) {
-  const encoded = encodeURIComponent(songName);
-  window.location.href = `player.html?song=${encoded}`;
+
+/* ✅ Click Fade Transition */
+document.querySelectorAll(".album").forEach(album => {
+  album.addEventListener("click", () => {
+    const song = album.dataset.song;
+    document.getElementById("main").classList.add("fade-out");
+    setTimeout(() => {
+      window.location.href = `player.html?song=${encodeURIComponent(song)}`;
+    }, 400);
+  });
+});
+
+/* ✅ Now Playing Highlight */
+const currentParams = new URLSearchParams(window.location.search);
+const currentSong = currentParams.get("song");
+
+if(currentSong){
+  document.querySelectorAll(".album").forEach(album => {
+    if(album.dataset.song === currentSong){
+      album.classList.add("now-playing");
+    }
+  });
 }
+
 </script>
 
 </body>
