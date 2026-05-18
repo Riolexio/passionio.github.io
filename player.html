@@ -30,7 +30,7 @@ body{
     url("background.jpg") center/cover no-repeat;
 }
 
-/* FLOATING OBJECTS */
+/* Floating */
 
 .floating{
   position:absolute;
@@ -71,8 +71,6 @@ body{
   margin:auto;
 }
 
-/* SHADOW */
-
 .shadow{
   position:absolute;
   width:90%;
@@ -86,7 +84,7 @@ body{
   filter:blur(10px);
 }
 
-/* VINYL */
+/* Vinyl */
 
 .vinyl{
   position:absolute;
@@ -118,8 +116,6 @@ body{
     0 0 60px rgba(255,180,100,0.25);
 }
 
-/* SHINE */
-
 .vinyl::after{
   content:"";
   position:absolute;
@@ -131,8 +127,6 @@ body{
       rgba(255,255,255,0.08) 35%,
       transparent 60%);
 }
-
-/* CENTER LABEL */
 
 .label{
   position:absolute;
@@ -165,7 +159,7 @@ body{
   to{transform:rotate(360deg);}
 }
 
-/* ✅ CLEAN MINIMAL TONEARM */
+/* ✅ UNIVERSAL TONEARM (works for all songs) */
 
 .tonearm{
   position:absolute;
@@ -180,7 +174,7 @@ body{
   z-index:5;
 }
 
-.playing .tonearm{
+.tonearm.playing{
   transform:rotate(-6deg);
 }
 
@@ -290,7 +284,7 @@ p{
 <div class="floating obj4">🎧</div>
 <div class="floating obj5">🎶</div>
 
-<div class="wrapper" id="wrapper">
+<div class="wrapper">
 
 <div class="stage">
   <div class="shadow"></div>
@@ -300,7 +294,7 @@ p{
     <img id="coverImage" class="album">
   </div>
 
-  <div class="tonearm">
+  <div class="tonearm" id="tonearm">
     <div class="pivot"></div>
     <div class="arm"></div>
     <div class="head"></div>
@@ -344,6 +338,16 @@ if(song){
   audio.src=song.file;
 }
 
+const vinyl=document.getElementById("vinyl");
+const tonearm=document.getElementById("tonearm");
+const audioEl=document.getElementById("audio");
+const playBtn=document.getElementById("playBtn");
+const progress=document.getElementById("progress");
+const thumb=document.getElementById("thumb");
+const progressBar=document.getElementById("progressBar");
+const current=document.getElementById("current");
+const duration=document.getElementById("duration");
+
 let dragging=false;
 
 function formatTime(sec){
@@ -352,14 +356,14 @@ function formatTime(sec){
   return m+":"+(s<10?"0"+s:s);
 }
 
-audio.addEventListener("loadedmetadata",()=>{
-  duration.textContent=formatTime(audio.duration);
+audioEl.addEventListener("loadedmetadata",()=>{
+  duration.textContent=formatTime(audioEl.duration);
 });
 
 function updateUI(percent){
   progress.style.width=percent*100+"%";
   thumb.style.left=percent*100+"%";
-  current.textContent=formatTime(audio.currentTime);
+  current.textContent=formatTime(audioEl.currentTime);
 }
 
 progressBar.addEventListener("pointerdown",e=>{
@@ -378,30 +382,30 @@ function seek(e){
   const rect=progressBar.getBoundingClientRect();
   let percent=(e.clientX-rect.left)/rect.width;
   percent=Math.max(0,Math.min(1,percent));
-  audio.currentTime=percent*audio.duration;
+  audioEl.currentTime=percent*audioEl.duration;
   updateUI(percent);
 }
 
-audio.addEventListener("timeupdate",()=>{
+audioEl.addEventListener("timeupdate",()=>{
   if(!dragging){
-    updateUI(audio.currentTime/audio.duration);
+    updateUI(audioEl.currentTime/audioEl.duration);
   }
 });
 
 playBtn.addEventListener("click",()=>{
-  if(audio.paused){audio.play();}
-  else{audio.pause();}
+  if(audioEl.paused){audioEl.play();}
+  else{audioEl.pause();}
 });
 
-audio.addEventListener("play",()=>{
+audioEl.addEventListener("play",()=>{
   vinyl.style.animationPlayState="running";
-  wrapper.classList.add("playing");
+  tonearm.classList.add("playing");
   playBtn.textContent="❚❚";
 });
 
-audio.addEventListener("pause",()=>{
+audioEl.addEventListener("pause",()=>{
   vinyl.style.animationPlayState="paused";
-  wrapper.classList.remove("playing");
+  tonearm.classList.remove("playing");
   playBtn.textContent="▶";
 });
 </script>
