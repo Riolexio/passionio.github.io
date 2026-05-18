@@ -7,494 +7,418 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@400&display=swap" rel="stylesheet">
 
 <style>
-  :root{
-    --accent: #ffcf7d;
-    --accent2:#b06a2b;
-    --text: #f5e6d3;
-    --muted: #e6ccb2;
+:root{
+  --accent:#ffcf7d;
+  --accent2:#b06a2b;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:'Montserrat',sans-serif;
+  color:#f5e6d3;
+  overflow:hidden;
+
+  background:
+    linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)),
+    url("background.jpg") center/cover no-repeat;
+}
+
+/* Disable parallax movement on touch devices */
+@media (hover:hover){
+  body{
+    transition:background-position 0.1s ease-out;
   }
+}
 
-  body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Montserrat', sans-serif;
-    color: var(--text);
-    overflow: hidden;
+/* ========= Floating ========= */
 
-    background:
-      linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
-      url("background.jpg") center/cover no-repeat;
-    background-attachment: fixed;
-    transition: background-position 0.1s ease-out;
-  }
+.floating{
+  position:absolute;
+  font-size:48px;
+  opacity:0.35;
+  pointer-events:none;
+}
 
-  /* ========= Floating ========= */
+.obj1{left:8%;animation:floatUp 25s linear infinite;color:#ff8fab;}
+.obj2{right:10%;animation:floatDown 30s linear infinite;color:#90e0ef;}
+.obj3{top:15%;animation:floatSide 35s linear infinite;color:#ffd166;}
+.obj4{left:70%;animation:floatUp 28s linear infinite;color:#caffbf;}
+.obj5{right:35%;animation:floatDown 32s linear infinite;color:#bdb2ff;}
 
-  .floating {
-    position: absolute;
-    font-size: 48px;
-    opacity: 0.35;
-    user-select: none;
-    pointer-events: none;
-    filter: drop-shadow(0 0 10px rgba(0,0,0,0.35));
-  }
+@keyframes floatUp{
+  0%{transform:translateY(110vh) rotate(0);}
+  100%{transform:translateY(-110vh) rotate(360deg);}
+}
+@keyframes floatDown{
+  0%{transform:translateY(-110vh) rotate(0);}
+  100%{transform:translateY(110vh) rotate(-360deg);}
+}
+@keyframes floatSide{
+  0%{transform:translateX(-110vw) rotate(0);}
+  100%{transform:translateX(110vw) rotate(360deg);}
+}
 
-  .obj1 { left: 8%;  animation: floatUp 25s linear infinite; color:#ff8fab; }
-  .obj2 { right: 10%; animation: floatDown 30s linear infinite; color:#90e0ef; }
-  .obj3 { top: 15%; animation: floatSide 35s linear infinite; color:#ffd166; }
-  .obj4 { left: 70%; animation: floatUp 28s linear infinite; color:#caffbf; }
-  .obj5 { right: 35%; animation: floatDown 32s linear infinite; color:#bdb2ff; }
+/* ========= Stage ========= */
 
-  @keyframes floatUp {
-    0% { transform: translateY(110vh) rotate(0deg); }
-    100% { transform: translateY(-110vh) rotate(360deg); }
-  }
-  @keyframes floatDown {
-    0% { transform: translateY(-110vh) rotate(0deg); }
-    100% { transform: translateY(110vh) rotate(-360deg); }
-  }
-  @keyframes floatSide {
-    0% { transform: translateX(-110vw) rotate(0deg); }
-    100% { transform: translateX(110vw) rotate(360deg); }
-  }
+.wrapper{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:90%;
+  max-width:420px;
+  text-align:center;
+}
 
-  /* ========= Wrapper ========= */
+.stage{
+  position:relative;
+  width:min(85vw,360px);
+  height:min(85vw,360px);
+  display:grid;
+  place-items:center;
+}
 
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-    max-width: 420px;
-    text-align: center;
-    z-index: 2;
-  }
+/* Shadow */
+.shadow{
+  position:absolute;
+  width:90%;
+  height:20%;
+  bottom:5%;
+  left:50%;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse at center,
+    rgba(0,0,0,0.6),
+    rgba(0,0,0,0) 70%);
+  filter:blur(10px);
+  z-index:0;
+}
 
-  /* ========= Record Stage (vinyl + tonearm) ========= */
+/* Vinyl */
 
-  .stage{
-    position: relative;
-    width: min(86vw, 380px);
-    height: min(86vw, 380px);
-    display: grid;
-    place-items: center;
-  }
+.vinyl{
+  position:relative;
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  animation:spin 6s linear infinite;
+  animation-play-state:paused;
+  z-index:2;
+}
 
-  /* Ambient shadow beneath record */
-  .shadow{
-    position: absolute;
-    width: 92%;
-    height: 22%;
-    bottom: 6%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: radial-gradient(ellipse at center,
-      rgba(0,0,0,0.65),
-      rgba(0,0,0,0.0) 70%
+/* Grooves */
+.vinyl::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at center,#222 0%,#111 8%,transparent 8%),
+    repeating-radial-gradient(circle at center,
+      #1a1a1a 0px,
+      #1a1a1a 2px,
+      #2a2a2a 3px,
+      #1a1a1a 4px
     );
-    filter: blur(10px);
-    opacity: 0.65;
-    z-index: 0;
-  }
+  box-shadow:
+    0 0 40px rgba(0,0,0,0.85),
+    0 0 60px rgba(255,180,100,0.25);
+  border-radius:50%;
+}
 
-  /* Vinyl */
-  .vinyl {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at center, #222 0%, #111 8%, transparent 8%),
-      repeating-radial-gradient(circle at center,
-        #1a1a1a 0px,
-        #1a1a1a 2px,
-        #2a2a2a 3px,
-        #1a1a1a 4px
-      );
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* ✅ Smooth subtle shine (no sweep) */
+.vinyl::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 25%,
+      rgba(255,255,255,0.25),
+      rgba(255,255,255,0.05) 35%,
+      transparent 60%);
+  mix-blend-mode:screen;
+  pointer-events:none;
+}
 
-    animation: spin 6s linear infinite;
-    animation-play-state: paused;
+/* Center label */
+.label{
+  position:absolute;
+  width:28%;
+  height:28%;
+  border-radius:50%;
+  background:radial-gradient(circle,#b08968,#7f5539);
+  box-shadow:inset 0 0 16px rgba(0,0,0,0.4);
+  z-index:3;
+}
 
-    /* Warm glow + depth */
-    box-shadow:
-      0 0 40px rgba(0,0,0,0.85),
-      0 0 70px rgba(255, 180, 100, 0.25);
+.album{
+  position:absolute;
+  width:35%;
+  height:35%;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid #e6ccb2;
+  z-index:4;
+}
 
-    z-index: 2;
-    overflow: hidden; /* needed for sheen clipping */
-  }
+@keyframes spin{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
 
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
+/* ========= Tonearm ========= */
 
-  /* Center label */
-  .vinyl::after {
-    content: "";
-    position: absolute;
-    width: 26%;
-    height: 26%;
-    border-radius: 50%;
-    background: radial-gradient(circle, #b08968, #7f5539);
-    box-shadow: inset 0 0 16px rgba(0,0,0,0.45);
-    z-index: 3;
-  }
+.tonearm{
+  position:absolute;
+  width:55%;
+  height:55%;
+  top:-5%;
+  right:-10%;
+  transform-origin:85% 18%;
+  transform:rotate(-32deg);
+  transition:transform 0.7s cubic-bezier(.2,.9,.2,1);
+  z-index:5;
+}
 
-  /* Realistic light reflection sweep */
-  .sheen{
-    position: absolute;
-    inset: -30%;
-    z-index: 4;
-    background:
-      linear-gradient(120deg,
-        rgba(255,255,255,0.00) 0%,
-        rgba(255,255,255,0.00) 35%,
-        rgba(255,230,190,0.22) 48%,
-        rgba(255,255,255,0.00) 58%,
-        rgba(255,255,255,0.00) 100%
-      );
-    mix-blend-mode: screen;
-    transform: translateX(-40%) rotate(0deg);
-    animation: sweep 4.5s ease-in-out infinite;
-    opacity: 0.85;
-    pointer-events: none;
-  }
+.playing .tonearm{
+  transform:rotate(8deg); /* ✅ Bigger movement */
+}
 
-  @keyframes sweep{
-    0%   { transform: translateX(-45%) rotate(-8deg); opacity: 0.55; }
-    45%  { opacity: 0.95; }
-    100% { transform: translateX(45%) rotate(-8deg); opacity: 0.55; }
-  }
+.tonearm .arm{
+  position:absolute;
+  right:10%;
+  top:14%;
+  width:80%;
+  height:8%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#cfcfcf,#8f8f8f,#dedede);
+}
+.tonearm .pivot{
+  position:absolute;
+  right:0;
+  top:5%;
+  width:25%;
+  height:25%;
+  border-radius:50%;
+  background:radial-gradient(circle,#d8d8d8,#6f6f6f);
+}
+.tonearm .head{
+  position:absolute;
+  left:5%;
+  top:20%;
+  width:25%;
+  height:18%;
+  border-radius:6px;
+  background:#111;
+}
+.tonearm .needle{
+  position:absolute;
+  left:0;
+  top:38%;
+  width:12%;
+  height:3%;
+  border-radius:999px;
+  background:var(--accent);
+}
 
-  /* Album art */
-  .album {
-    position: absolute;
-    width: 35%;
-    height: 35%;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid var(--muted);
-    z-index: 5;
-    box-shadow: 0 0 18px rgba(0,0,0,0.55);
-    pointer-events: none;
-  }
+/* ========= Controls ========= */
 
-  /* ========= Tonearm ========= */
+h1{
+  font-family:'Playfair Display',serif;
+  margin-top:20px;
+  font-size:26px;
+}
+p{
+  color:#e6ccb2;
+  font-size:14px;
+}
 
-  .tonearm{
-    position: absolute;
-    width: 48%;
-    height: 48%;
-    top: -2%;
-    right: -6%;
-    z-index: 6;
-    transform-origin: 85% 18%;
-    transform: rotate(-28deg);
-    transition: transform 650ms cubic-bezier(.2,.9,.2,1);
-    filter: drop-shadow(0 10px 12px rgba(0,0,0,0.45));
-    pointer-events: none;
-  }
+.progress-container{
+  width:100%;
+  margin-top:15px;
+}
 
-  /* The arm */
-  .tonearm .arm{
-    position: absolute;
-    right: 10%;
-    top: 14%;
-    width: 78%;
-    height: 8%;
-    border-radius: 999px;
-    background: linear-gradient(90deg, #cfcfcf, #8f8f8f, #dedede);
-  }
+.time-row{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+}
 
-  /* Pivot base */
-  .tonearm .pivot{
-    position: absolute;
-    right: 2%;
-    top: 6%;
-    width: 22%;
-    height: 22%;
-    border-radius: 50%;
-    background: radial-gradient(circle, #d8d8d8, #6f6f6f);
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.35);
-  }
+.progress-bar{
+  width:100%;
+  height:6px;
+  background:rgba(255,255,255,0.3);
+  border-radius:5px;
+  position:relative;
+  margin-top:6px;
+  cursor:pointer;
+}
 
-  /* Head (needle cartridge) */
-  .tonearm .head{
-    position: absolute;
-    left: 6%;
-    top: 20%;
-    width: 22%;
-    height: 18%;
-    border-radius: 6px;
-    background: linear-gradient(180deg, #2b2b2b, #0f0f0f);
-    box-shadow: 0 0 10px rgba(0,0,0,0.35);
-  }
+.progress{
+  height:100%;
+  width:0%;
+  background:var(--accent);
+  border-radius:5px;
+}
 
-  /* Needle tip */
-  .tonearm .needle{
-    position: absolute;
-    left: 2%;
-    top: 35%;
-    width: 10%;
-    height: 3%;
-    border-radius: 999px;
-    background: #ffcf7d;
-    opacity: 0.9;
-  }
+.thumb{
+  position:absolute;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:14px;
+  height:14px;
+  background:var(--accent);
+  border-radius:50%;
+  cursor:pointer;
+}
 
-  /* When playing, tonearm swings in */
-  .playing .tonearm{
-    transform: rotate(-6deg);
-  }
+.play-btn{
+  margin-top:20px;
+  width:65px;
+  height:65px;
+  border-radius:50%;
+  background:radial-gradient(circle,var(--accent),var(--accent2));
+  box-shadow:0 0 25px rgba(255,180,100,0.8);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+}
+.play-btn span{
+  font-size:24px;
+  color:#3b2f2f;
+}
 
-  /* ========= Text ========= */
-
-  h1 {
-    font-family: 'Playfair Display', serif;
-    margin-top: 22px;
-    font-size: 26px;
-  }
-  p {
-    margin-top: 5px;
-    color: var(--muted);
-    font-size: 14px;
-  }
-
-  /* ========= Spotify Bar ========= */
-
-  .progress-container {
-    width: 100%;
-    margin-top: 18px;
-  }
-
-  .time-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    margin-bottom: 6px;
-  }
-
-  .progress-bar {
-    width: 100%;
-    height: 6px;
-    background: rgba(255,255,255,0.3);
-    border-radius: 5px;
-    position: relative;
-    cursor: pointer;
-    touch-action: none; /* helps mobile dragging */
-  }
-
-  .progress {
-    height: 100%;
-    width: 0%;
-    background: var(--accent);
-    border-radius: 5px;
-  }
-
-  .thumb {
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 14px;
-    height: 14px;
-    background: var(--accent);
-    border-radius: 50%;
-    cursor: grab;
-    box-shadow: 0 0 10px rgba(255, 207, 125, 0.35);
-  }
-  .thumb:active{ cursor: grabbing; }
-
-  /* ========= Play Button ========= */
-
-  .play-btn {
-    margin-top: 22px;
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--accent), var(--accent2));
-    box-shadow: 0 0 25px rgba(255,180,100,0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .play-btn span {
-    font-size: 24px;
-    color: #3b2f2f;
-  }
-
-  /* Small screens */
-  @media (max-width: 380px){
-    .floating{ font-size: 40px; }
-    h1{ font-size: 24px; }
-  }
 </style>
 </head>
-
 <body>
-  <div class="floating obj1">📼</div>
-  <div class="floating obj2">💿</div>
-  <div class="floating obj3">📻</div>
-  <div class="floating obj4">🎧</div>
-  <div class="floating obj5">🎶</div>
 
-  <div class="wrapper" id="wrapper">
+<div class="floating obj1">📼</div>
+<div class="floating obj2">💿</div>
+<div class="floating obj3">📻</div>
+<div class="floating obj4">🎧</div>
+<div class="floating obj5">🎶</div>
 
-    <div class="stage">
-      <div class="shadow"></div>
+<div class="wrapper" id="wrapper">
 
-      <div class="vinyl" id="vinyl">
-        <div class="sheen"></div>
-        <img src="IRIS- goo goo dolls.jpg" class="album" alt="Album art">
-      </div>
+<div class="stage">
+  <div class="shadow"></div>
 
-      <div class="tonearm" aria-hidden="true">
-        <div class="pivot"></div>
-        <div class="arm"></div>
-        <div class="head"></div>
-        <div class="needle"></div>
-      </div>
-    </div>
-
-    <h1>Iris</h1>
-    <p>Goo Goo Dolls</p>
-
-    <div class="progress-container">
-      <div class="time-row">
-        <span id="current">0:00</span>
-        <span id="duration">0:00</span>
-      </div>
-      <div class="progress-bar" id="progressBar">
-        <div class="progress" id="progress"></div>
-        <div class="thumb" id="thumb" style="left:0%"></div>
-      </div>
-    </div>
-
-    <div class="play-btn" id="playBtn">
-      <span>▶</span>
-    </div>
-
+  <div class="vinyl" id="vinyl">
+    <div class="label"></div>
+    <img src="IRIS- goo goo dolls.jpg" class="album">
   </div>
 
-  <audio id="audio">
-    <source src="iris.mp3" type="audio/mpeg">
-  </audio>
+  <div class="tonearm">
+    <div class="pivot"></div>
+    <div class="arm"></div>
+    <div class="head"></div>
+    <div class="needle"></div>
+  </div>
+</div>
+
+<h1>Iris</h1>
+<p>Goo Goo Dolls</p>
+
+<div class="progress-container">
+  <div class="time-row">
+    <span id="current">0:00</span>
+    <span id="duration">0:00</span>
+  </div>
+  <div class="progress-bar" id="progressBar">
+    <div class="progress" id="progress"></div>
+    <div class="thumb" id="thumb"></div>
+  </div>
+</div>
+
+<div class="play-btn" id="playBtn">
+  <span>▶</span>
+</div>
+
+</div>
+
+<audio id="audio">
+  <source src="iris.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-  const wrapper = document.getElementById("wrapper");
-  const audio = document.getElementById("audio");
-  const playBtn = document.getElementById("playBtn");
-  const vinyl = document.getElementById("vinyl");
+const wrapper=document.getElementById("wrapper");
+const audio=document.getElementById("audio");
+const vinyl=document.getElementById("vinyl");
+const playBtn=document.getElementById("playBtn");
+const progress=document.getElementById("progress");
+const thumb=document.getElementById("thumb");
+const progressBar=document.getElementById("progressBar");
+const current=document.getElementById("current");
+const duration=document.getElementById("duration");
 
-  const progressBar = document.getElementById("progressBar");
-  const progress = document.getElementById("progress");
-  const thumb = document.getElementById("thumb");
-  const current = document.getElementById("current");
-  const duration = document.getElementById("duration");
+let dragging=false;
 
-  let isDragging = false;
+function formatTime(sec){
+  const m=Math.floor(sec/60);
+  const s=Math.floor(sec%60);
+  return m+":"+(s<10?"0"+s:s);
+}
 
-  // Parallax background (mouse only; harmless on mobile)
-  document.addEventListener("mousemove", (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 18;
-    const y = (e.clientY / window.innerHeight - 0.5) * 18;
-    document.body.style.backgroundPosition = `${50 + x}% ${50 + y}%`;
-  });
+audio.addEventListener("loadedmetadata",()=>{
+  duration.textContent=formatTime(audio.duration);
+});
 
-  function formatTime(sec){
-    if (!isFinite(sec)) return "0:00";
-    const m = Math.floor(sec/60);
-    const s = Math.floor(sec%60);
-    return m + ":" + (s<10 ? "0"+s : s);
+audio.addEventListener("timeupdate",()=>{
+  if(!dragging){
+    const percent=audio.currentTime/audio.duration;
+    progress.style.width=percent*100+"%";
+    thumb.style.left=percent*100+"%";
+    current.textContent=formatTime(audio.currentTime);
   }
+});
 
-  function setUIByPercent(percent){
-    percent = Math.max(0, Math.min(1, percent));
-    progress.style.width = (percent * 100) + "%";
-    thumb.style.left = (percent * 100) + "%";
+progressBar.addEventListener("click",(e)=>{
+  const rect=progressBar.getBoundingClientRect();
+  const percent=(e.clientX-rect.left)/rect.width;
+  audio.currentTime=percent*audio.duration;
+});
+
+thumb.addEventListener("mousedown",()=>dragging=true);
+document.addEventListener("mouseup",()=>dragging=false);
+
+document.addEventListener("mousemove",(e)=>{
+  if(dragging){
+    const rect=progressBar.getBoundingClientRect();
+    let offset=e.clientX-rect.left;
+    offset=Math.max(0,Math.min(offset,rect.width));
+    const percent=offset/rect.width;
+    progress.style.width=percent*100+"%";
+    thumb.style.left=percent*100+"%";
+    audio.currentTime=percent*audio.duration;
   }
+});
 
-  function seekByClientX(clientX){
-    const rect = progressBar.getBoundingClientRect();
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    const percent = x / rect.width;
-    if (isFinite(audio.duration)) audio.currentTime = percent * audio.duration;
-    setUIByPercent(percent);
+playBtn.addEventListener("click",()=>{
+  if(audio.paused){
+    audio.play();
+  }else{
+    audio.pause();
   }
+});
 
-  audio.addEventListener("loadedmetadata", ()=>{
-    duration.textContent = formatTime(audio.duration);
-  });
+audio.addEventListener("play",()=>{
+  vinyl.style.animationPlayState="running";
+  wrapper.classList.add("playing");
+  playBtn.innerHTML="<span>❚❚</span>";
+});
 
-  audio.addEventListener("timeupdate", ()=>{
-    current.textContent = formatTime(audio.currentTime);
-    if (!isDragging && isFinite(audio.duration) && audio.duration > 0){
-      setUIByPercent(audio.currentTime / audio.duration);
-    }
-  });
-
-  // Click to seek
-  progressBar.addEventListener("click", (e)=>{
-    seekByClientX(e.clientX);
-  });
-
-  // Drag thumb (mouse + touch)
-  const startDrag = (clientX) => {
-    isDragging = true;
-    seekByClientX(clientX);
-  };
-  const moveDrag = (clientX) => {
-    if (!isDragging) return;
-    seekByClientX(clientX);
-  };
-  const endDrag = () => {
-    isDragging = false;
-  };
-
-  thumb.addEventListener("mousedown", (e)=> startDrag(e.clientX));
-  document.addEventListener("mousemove", (e)=> moveDrag(e.clientX));
-  document.addEventListener("mouseup", endDrag);
-
-  thumb.addEventListener("touchstart", (e)=>{
-    startDrag(e.touches[0].clientX);
-  }, {passive:true});
-
-  document.addEventListener("touchmove", (e)=>{
-    if(!isDragging) return;
-    moveDrag(e.touches[0].clientX);
-  }, {passive:true});
-
-  document.addEventListener("touchend", endDrag);
-
-  // Play / Pause
-  playBtn.addEventListener("click", ()=>{
-    if(audio.paused){
-      audio.play();
-    } else {
-      audio.pause();
-    }
-  });
-
-  audio.addEventListener("play", ()=>{
-    vinyl.style.animationPlayState = "running";
-    wrapper.classList.add("playing");
-    playBtn.innerHTML = "<span>❚❚</span>";
-  });
-
-  audio.addEventListener("pause", ()=>{
-    vinyl.style.animationPlayState = "paused";
-    wrapper.classList.remove("playing");
-    playBtn.innerHTML = "<span>▶</span>";
-  });
+audio.addEventListener("pause",()=>{
+  vinyl.style.animationPlayState="paused";
+  wrapper.classList.remove("playing");
+  playBtn.innerHTML="<span>▶</span>";
+});
 </script>
 
 </body>
