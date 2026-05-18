@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Now Playing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom, #1db954 0%, #121212 40%);
+      font-family: 'Montserrat', sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      text-align: center;
+      width: 300px;
+    }
+
+    .cover {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    h1 {
+      font-size: 20px;
+      margin: 15px 0 5px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #b3b3b3;
+      margin-bottom: 20px;
+    }
+
+    audio {
+      width: 100%;
+      filter: invert(1);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <img src="cover1.jpg" class="cover">
+
+    <h1>Your Song Title</h1>
+    <p>Your Artist Name</p>
+
+    <audio autoplay controls>
+      <source src="song1.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+</body>
+</html>
